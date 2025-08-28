@@ -37,6 +37,7 @@ jobs:
         uses: slackapi/slack-github-action@v2.0.0
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK }}
+          webhook-type: 'incoming-webhook'
           payload: |
             {
               "text": ":white_check_mark: GitHub Actions Difyワークフローの実行が完了しました！"
@@ -46,6 +47,7 @@ jobs:
         uses: slackapi/slack-github-action@v2.0.0
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK }}
+          webhook-type: 'incoming-webhook'
           payload: |
             {
               "text": ":x: GitHub Actions Difyワークフローの実行に失敗しました。ログを確認してください。"
