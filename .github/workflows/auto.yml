@@ -2,7 +2,7 @@ name: Auto
 
 on:
   schedule:
-    - cron: "0 22 * * *"
+    - cron: "0 22 * * *" # 日本時間AM 7:00
   workflow_dispatch:
 
 env:
@@ -36,21 +36,17 @@ jobs:
         if: success()
         uses: slackapi/slack-github-action@v2.0.0
         with:
-          slack-webhook-type: 'incoming-webhook'
+          webhook-url: ${{ secrets.SLACK_WEBHOOK }}
           payload: |
             {
               "text": ":white_check_mark: GitHub Actions Difyワークフローの実行が完了しました！"
             }
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
       - name: Notify Slack on Failure
         if: failure()
         uses: slackapi/slack-github-action@v2.0.0
         with:
-          slack-webhook-type: 'incoming-webhook'
+          webhook-url: ${{ secrets.SLACK_WEBHOOK }}
           payload: |
             {
               "text": ":x: GitHub Actions Difyワークフローの実行に失敗しました。ログを確認してください。"
             }
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
