@@ -7,19 +7,8 @@ on:
 
 env:
   DIFY_TOKENS: ${{ secrets.DIFY_TOKENS }}
-  DIFY_BASE_URL: ${{ secrets.DIFY_BASE_URL }}
-  DIFY_INPUTS: ${{ secrets.DIFY_INPUTS }}
-  EMAIL_USER: ${{ secrets.EMAIL_USER }}
-  EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
-  EMAIL_TO: ${{ secrets.EMAIL_TO }}
-  DINGDING_WEBHOOK: ${{ secrets.DINGDING_WEBHOOK }}
-  PUSHPLUS_TOKEN: ${{ secrets.PUSHPLUS_TOKEN }}
-  WEIXIN_WEBHOOK: ${{ secrets.WEIXIN_WEBHOOK }}
-  SERVERPUSHKEY: ${{ secrets.SERVERPUSHKEY }}
-  FEISHU_WEBHOOK: ${{ secrets.FEISHU_WEBHOOK }}
-  AIBOTK_KEY: ${{ secrets.AIBOTK_KEY }}
-  AIBOTK_ROOM_RECIVER: ${{ secrets.AIBOTK_ROOM_RECIVER }}
-  AIBOTK_CONTACT_RECIVER: ${{ secrets.AIBOTK_CONTACT_RECIVER }}
+  # ... その他のシークレット ...
+  SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
 
 jobs:
   DifyWorkflow:
@@ -31,3 +20,23 @@ jobs:
         run: |
           yarn
           yarn workflowDify
+      - name: Notify Slack on Success
+        if: success()
+        uses: slackapi/slack-action@v1.2.0
+        with:
+          payload: |
+            {
+              "text": "GitHub Actions Difyワークフローの実行が完了しました！"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+      - name: Notify Slack on Failure
+        if: failure()
+        uses: slackapi/slack-action@v1.2.0
+        with:
+          payload: |
+            {
+              "text": "GitHub Actions Difyワークフローの実行に失敗しました。ログを確認してください。"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
