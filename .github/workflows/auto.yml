@@ -22,7 +22,7 @@ jobs:
           yarn workflowDify
       - name: Notify Slack on Success
         if: success()
-        uses: slackapi/slack-github-action@v2.0.0
+        uses: slackapi/slack-action@v2.0.0
         with:
           payload: |
             {
@@ -32,7 +32,7 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
       - name: Notify Slack on Failure
         if: failure()
-        uses: slackapi/slack-github-action@v2.0.0
+        uses: slackapi/slack-action@v2.0.0
         with:
           payload: |
             {
